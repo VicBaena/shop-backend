@@ -1,13 +1,7 @@
 #[macro_use] extern crate rocket;
 
-#[get("/")]
-fn index() -> String {
-    String::from("Hello from the back side")
-}
-#[get("/salutation")]
-fn salutation() -> String {
-    String::from("another salutation")
-}
+mod routes;
+use crate::routes::get_routes::get::{index, salutation};
 
 #[launch]
 fn rocket() -> _ {
@@ -21,12 +15,13 @@ mod test {
     use super::rocket;
     use rocket::local::blocking::Client;
     use rocket::http::Status;
+    use super::routes::get_routes::get;
 
     #[test]
     fn test_index(){
         let string_response = "Hello from the back side";
         let client =  Client::tracked(rocket()).expect("Valid rocket instance");
-        let response = client.get(uri!(super::index)).dispatch();
+        let response = client.get(uri!(get::index)).dispatch();
         assert_eq!(response.status(), Status::Ok);
         assert_eq!(response.into_string().unwrap(), string_response);
     }
@@ -35,7 +30,7 @@ mod test {
     fn test_salutation(){
         let string_response = "another salutation";
         let client =  Client::tracked(rocket()).expect("Valid rocket instance");
-        let response = client.get(uri!(super::salutation)).dispatch();
+        let response = client.get(uri!(get::salutation)).dispatch();
         assert_eq!(response.status(), Status::Ok);
         assert_eq!(response.into_string().unwrap(), string_response);
     }
