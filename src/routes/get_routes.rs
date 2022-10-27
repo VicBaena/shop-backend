@@ -1,5 +1,3 @@
-// mod mysql::*;
-
 pub mod get {
     //to format response to html
     use rocket::response::content;

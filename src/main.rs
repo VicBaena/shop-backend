@@ -1,6 +1,8 @@
 #[macro_use] extern crate rocket;
 
 mod routes;
+mod mysql_driver;
+mod structs;
 use crate::routes::get_routes::get::{index, salutation};
 
 #[launch]
@@ -19,7 +21,7 @@ mod test {
 
     #[test]
     fn test_index(){
-        let string_response = "Hello from the back side";
+        let string_response = "<h1>Hello from the back side</h1>";
         let client =  Client::tracked(rocket()).expect("Valid rocket instance");
         let response = client.get(uri!(get::index)).dispatch();
         assert_eq!(response.status(), Status::Ok);
